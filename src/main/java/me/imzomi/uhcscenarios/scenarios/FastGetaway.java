@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -35,15 +36,12 @@ public class FastGetaway
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " No puedes ejecutar comandos desde la consola");
-        }
         if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("FastGetaway")) {
             if (!plugin.FastGetaway) {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fFastGetaway has been &aenabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fFastGetaway has been " + Main.enabled));
                 plugin.FastGetaway = Boolean.valueOf(true);
             } else {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fFastGetaway has been &cdisabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fFastGetaway has been " + Main.disabled));
                 plugin.FastGetaway = Boolean.valueOf(false);
             }
         } else {

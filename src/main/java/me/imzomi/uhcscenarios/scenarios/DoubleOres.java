@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -89,15 +90,12 @@ public class DoubleOres implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " No puedes ejecutar comandos desde la consola");
-        }
         if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("DoubleOres")) {
             if (!plugin.DoubleOres) {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + " &0➤ &fDoubleOres has been &aenabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fDoubleOres has been " + Main.enabled));
                 plugin.DoubleOres = Boolean.valueOf(true);
             } else {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + " &0➤ &fDoubleOres has been &cdisabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fDoubleOres has been " + Main.disabled));
                 plugin.DoubleOres = Boolean.valueOf(false);
             }
         } else {

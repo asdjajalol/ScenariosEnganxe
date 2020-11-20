@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -33,10 +34,10 @@ public class NoFall implements Listener, CommandExecutor {
         }
         if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("NoFall")) {
             if (!plugin.NoFall) {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fNoFall has been &aenabled"));
+                Bukkit.broadcastMessage( Utils.chat(Main.prefix + "&fNoFall has been " + Main.enabled));
                 plugin.NoFall = Boolean.valueOf(true);
             } else {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fNoFall has been &cdisabled"));
+                Bukkit.broadcastMessage( Utils.chat(Main.prefix + "&fNoFall has been " + Main.disabled));
                 plugin.NoFall = Boolean.valueOf(false);
             }
         } else {

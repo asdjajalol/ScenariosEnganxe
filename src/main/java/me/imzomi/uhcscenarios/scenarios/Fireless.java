@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -29,15 +30,12 @@ public class Fireless implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " No puedes ejecutar comandos desde la consola");
-        }
         if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("Fireless")) {
             if (!plugin.Fireless) {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fFireless has been &aenabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fFireless has been " + Main.enabled));
                 plugin.Fireless = Boolean.valueOf(true);
             } else {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fFireless has been &cdisabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fFireless has been " + Main.disabled));
                 plugin.Fireless = Boolean.valueOf(false);
             }
         } else {

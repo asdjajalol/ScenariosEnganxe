@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -69,15 +70,12 @@ public class BlastMining
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " No puedes ejecutar comandos desde la consola");
-        }
         if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("BlastMining")) {
             if (!plugin.BlastMining) {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fBlastMining has been &aenabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fBlastMining has been " + Main.enabled));
                 plugin.BlastMining = Boolean.valueOf(true);
             } else {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fBlastMining has been &cdisabled"));
+                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fBlastMining has been " + Main.disabled));
                 plugin.BlastMining = Boolean.valueOf(false);
             }
         } else {

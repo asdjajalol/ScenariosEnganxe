@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -78,24 +79,21 @@ public class FenceHead implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;
-        if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " No puedes ejecutar comandos desde la consola");
-        }
         if (sender.hasPermission("uhc.admin")) {
             if (cmd.getName().equalsIgnoreCase("FenceHead")) {
                 if (!plugin.FenceHead) {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + " &0➤ &fFenceHead has been &aenabled"));
+                    Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fFenceHead has been " + Main.enabled));
                     plugin.FenceHead = Boolean.valueOf(true);
                 } else {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + " &0➤ &fFenceHead has been &cdisabled"));
+                    Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fFenceHead has been " + Main.disabled));
                     plugin.FenceHead = Boolean.valueOf(false);
                 }
             } else if (cmd.getName().equalsIgnoreCase("RewardingBlocks")) {
                 if (!plugin.RewardingBlocks) {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + " &0➤ &fRewardingBlocks has been &aenabled"));
+                    Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fRewardingBlocks has been " + Main.enabled));
                     plugin.RewardingBlocks = Boolean.valueOf(true);
                 } else {
-                    Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + " &0➤ &fRewardingBlocks has been &cdisabled"));
+                    Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fRewardingBlocks has been " + Main.disabled));
                     plugin.RewardingBlocks = Boolean.valueOf(false);
                 }
             }

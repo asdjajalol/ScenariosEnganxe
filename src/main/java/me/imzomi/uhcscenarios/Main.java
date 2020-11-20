@@ -65,6 +65,8 @@ public class Main extends JavaPlugin{
     public static Boolean GoldLess = Boolean.valueOf(false);
     public static Boolean TimeBomb = Boolean.valueOf(false);
     public static String prefix = Utils.chat("&6&lUHC &8➤ ");
+    public static String enabled = Utils.chat("&aenabled");
+    public static String disabled = Utils.chat("&cdisabled");
     public Main() {
         diamond = new ShapelessRecipe(new ItemStack(Material.DIAMOND)).addIngredient(9, Material.REDSTONE_BLOCK);
     }

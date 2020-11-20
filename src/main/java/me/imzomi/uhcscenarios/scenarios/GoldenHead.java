@@ -20,7 +20,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Objects;
 
-public class GoldenHead implements Listener, CommandExecutor {
+public class GoldenHead implements Listener {
 
     private Main plugin;
 
@@ -40,24 +40,5 @@ public class GoldenHead implements Listener, CommandExecutor {
                 }
             }
         }
-    }
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (!(sender instanceof Player)) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + ChatColor.RED + " No puedes ejecutar comandos desde la consola");
-        }
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("GoldenRetriever")) {
-            if (!plugin.GoldenRetriever) {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fGoldenRetriever has been &aenabled"));
-                plugin.GoldenRetriever = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ " &0➤ &fGoldenRetriever has been &cdisabled"));
-                plugin.GoldenRetriever = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
     }
 }

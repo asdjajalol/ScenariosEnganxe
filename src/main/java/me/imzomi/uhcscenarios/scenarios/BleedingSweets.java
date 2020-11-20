@@ -26,6 +26,9 @@ public class BleedingSweets
     @EventHandler
     public void bleedingSweets(EntityDeathEvent e){
         if (plugin.BleedingSweets){
+            if (Main.TimeBomb){
+                return;
+            }
             if (e.getEntity().getType() == EntityType.PLAYER){
                 ItemStack diamond = new ItemStack(Material.DIAMOND, 1);
                 ItemStack gold = new ItemStack (Material.GOLD_INGOT, 5);

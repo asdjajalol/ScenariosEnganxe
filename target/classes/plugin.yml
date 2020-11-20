@@ -86,8 +86,10 @@ commands:
     description: goldless command
   goldenretriever:
     description: goldenretriever command
-  goldenhead:
-    description: goldenhead command
+  scen:
+    description: scen command
+  timebomb:
+    description: timebomb command
 
 
 

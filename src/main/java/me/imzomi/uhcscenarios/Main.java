@@ -1,7 +1,10 @@
 package me.imzomi.uhcscenarios;
 
-import me.imzomi.uhcscenarios.links.links;
+import me.imzomi.uhcscenarios.commands.links;
+import me.imzomi.uhcscenarios.commands.scen;
+import me.imzomi.uhcscenarios.listeners.InventoryClick;
 import me.imzomi.uhcscenarios.scenarios.*;
+import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,13 +18,14 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.sql.Time;
 import java.util.Iterator;
 
 public class Main extends JavaPlugin{
     private final ShapelessRecipe diamond;
 
-        public static Boolean NoFall = Boolean.valueOf(false);
-        public static Boolean Fireless = Boolean.valueOf(false);
+    public static Boolean NoFall = Boolean.valueOf(false);
+    public static Boolean Fireless = Boolean.valueOf(false);
     public static Boolean Bowless = Boolean.valueOf(false);
     public static Boolean Timber = Boolean.valueOf(true);
     public static Boolean CutClean = Boolean.valueOf(true);
@@ -59,6 +63,8 @@ public class Main extends JavaPlugin{
     public static Boolean Krenzinator = Boolean.valueOf(false);
     public static Boolean DiamondLess = Boolean.valueOf(false);
     public static Boolean GoldLess = Boolean.valueOf(false);
+    public static Boolean TimeBomb = Boolean.valueOf(false);
+    public static String prefix = Utils.chat("&6&lUHC &8➤ ");
     public Main() {
         diamond = new ShapelessRecipe(new ItemStack(Material.DIAMOND)).addIngredient(9, Material.REDSTONE_BLOCK);
     }
@@ -92,6 +98,7 @@ public class Main extends JavaPlugin{
 
 
         this.getCommand("links").setExecutor(new links(this));
+        this.getCommand("scen").setExecutor(new scen(this));
         this.getCommand("cutclean").setExecutor(new CutClean(this));
         this.getCommand("hasteyboys").setExecutor(new HasteyBoys(this));
         this.getCommand("hasteyboysplus").setExecutor(new HasteyBoysPlus(this));
@@ -131,6 +138,7 @@ public class Main extends JavaPlugin{
         this.getCommand("tripleores").setExecutor(new TripleOres(this));
         this.getCommand("diamondless").setExecutor(new DiamondLess(this));
         this.getCommand("goldless").setExecutor(new GoldLess(this));
+        this.getCommand("timebomb").setExecutor(new TimeBomb(this));
 
     }
     public void registrarEvents() {
@@ -172,6 +180,8 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new TripleOres(this), this);
         pm.registerEvents(new DiamondLess(this), this);
         pm.registerEvents(new GoldLess(this), this);
+        new InventoryClick(this);
+        new TimeBomb(this);
     }
     public void addDiamondRecipe() {
         getServer().addRecipe(diamond);

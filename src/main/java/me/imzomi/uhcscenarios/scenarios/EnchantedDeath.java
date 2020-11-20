@@ -28,6 +28,9 @@ public class EnchantedDeath
     public void EnchantedDeath(EntityDeathEvent e){
         if (plugin.EnchantedDeath){
             if (e.getEntity().getType() == EntityType.PLAYER){
+                if (Main.TimeBomb){
+                    return;
+                }
                 ItemStack Enchants = new ItemStack(Material.ENCHANTING_TABLE, 1);
                 e.getDrops().add(Enchants);
             }

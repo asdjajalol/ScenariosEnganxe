@@ -1,9 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,12 +21,18 @@ public class GoldenRetriever implements Listener, CommandExecutor {
     }
     @EventHandler
     public void onDeath(PlayerDeathEvent e){
+        if (Main.TimeBomb){
+            return;
+        }
         if (Main.GoldenRetriever){
+            Player p = e.getEntity();
             ItemStack gHead = new ItemStack(Material.GOLDEN_APPLE);
             ItemMeta HeadMeta = gHead.getItemMeta();
             HeadMeta.setDisplayName("§6Golden Head");
             gHead.setItemMeta(HeadMeta);
-            e.getDrops().add(gHead);
+            Location loc = p.getLocation();
+            World w = p.getWorld();
+            w.dropItem(loc, gHead);
         }
     }
 

@@ -26,6 +26,9 @@ public class HeavyPockets
 
     @EventHandler
     public void heavyPockets(EntityDeathEvent e){
+        if (Main.TimeBomb){
+            return;
+        }
         if (plugin.HeavyPockets){
             if (e.getEntity().getType() == EntityType.PLAYER){
                 ItemStack netherite = new ItemStack(Material.NETHERITE_SCRAP, 2);

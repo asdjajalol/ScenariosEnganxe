@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ScenariosEnganxe:jar">
+    <output-path>$PROJECT_DIR$/../ScenariosUHC</output-path>
+    <root id="archive" name="ScenariosEnganxe.jar">
+      <element id="module-output" name="ScenariosEnganxe" />
+    </root>
+  </artifact>
+</component>

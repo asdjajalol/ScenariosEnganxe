@@ -10,6 +10,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ui {
     public static String iname = Utils.chat("&6Scenarios Activated");
     public static void openInventory(Player player) {
@@ -18,6 +21,10 @@ public class ui {
             ItemStack a = new ItemStack(Material.APPLE, 1);
             ItemMeta e = a.getItemMeta();
             e.setDisplayName(Utils.chat("&eAbsorptionLess"));
+            List<String> loresList = new ArrayList<String>();
+            loresList.add(Utils.chat(""));
+            loresList.add(Utils.chat(""));
+            e.setLore(loresList);
             a.setItemMeta(e);
             inv.addItem(a);
         }

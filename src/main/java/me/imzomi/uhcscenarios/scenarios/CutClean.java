@@ -65,12 +65,6 @@ public class CutClean implements Listener, CommandExecutor {
                 ExperienceOrb exp = (ExperienceOrb) e.getBlock().getWorld().spawn(e.getBlock().getLocation().add(0, 1, 0), ExperienceOrb.class);
                 exp.setExperience(3);
             }
-            else if (e.getBlock().getType() == Material.GRAVEL) {
-                e.setCancelled(true);
-                block.setType(Material.AIR);
-                block.getState().update();
-                block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.FLINT));
-            }
         }
     }
 

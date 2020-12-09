@@ -37,6 +37,7 @@ public class TimeBomb implements Listener, CommandExecutor {
     private Main plugin;
     public TimeBomb (Main plugin){
         this.plugin = plugin;
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     @EventHandler
@@ -125,7 +126,7 @@ public class TimeBomb implements Listener, CommandExecutor {
                     time--;
 
                     if (time == 0) {
-                        Bukkit.broadcastMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Meetup" + ChatColor.DARK_GRAY + "] " + "§a" + player.getName() + "'s §fcorpse has exploded!");
+                        Bukkit.broadcastMessage(Main.prefix + player.getName() + "'s §7corpse has exploded!");
                         loc.getBlock().setType(Material.AIR);
                         loc.getWorld().createExplosion(loc.getBlockX() + 0.5, loc.getBlockY() + 0.5, loc.getBlockZ() + 0.5, 3, false, true);
                         loc.getWorld().strikeLightning(loc);

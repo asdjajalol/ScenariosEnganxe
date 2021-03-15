@@ -64,9 +64,9 @@ public class Main extends JavaPlugin{
     public static Boolean DiamondLess = Boolean.valueOf(false);
     public static Boolean GoldLess = Boolean.valueOf(false);
     public static Boolean TimeBomb = Boolean.valueOf(false);
-    public static String prefix = Utils.chat("&6&lUHC &8➤ ");
-    public static String enabled = Utils.chat("&aenabled");
-    public static String disabled = Utils.chat("&cdisabled");
+    public static String prefix = Utils.chat("&9&lUHC &8» &r");
+    public static String enabled = Utils.chat("&9enabled");
+    public static String disabled = Utils.chat("&9disabled");
     public Main() {
         diamond = new ShapelessRecipe(new ItemStack(Material.DIAMOND)).addIngredient(9, Material.REDSTONE_BLOCK);
     }
@@ -77,7 +77,7 @@ public class Main extends JavaPlugin{
 //ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]" (nombre)
 
     public void onEnable(){
-        Bukkit.getConsoleSender().sendMessage((ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]"+ChatColor.GOLD+" ScenariosUHC has been enabled (version:"+ChatColor.GRAY+version+ChatColor.GOLD+")"));
+        Bukkit.getConsoleSender().sendMessage("ScenariosUHC has been enabled");
         registrarComandos();
         registrarEvents();
         ItemStack head = new ItemStack(Material.GOLDEN_APPLE);

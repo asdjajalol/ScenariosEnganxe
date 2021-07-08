@@ -24,10 +24,11 @@ public class GoldLess implements Listener, CommandExecutor {
     public void onBreak(BlockBreakEvent e) {
         if (plugin.GoldLess) {
             Block block = e.getBlock();
-            if (block.getType() == Material.GOLD_ORE)
+            if (block.getType() == Material.GOLD_ORE) {
                 e.setCancelled(true);
-            block.setType(Material.AIR);
-            block.getState().update();
+                block.setType(Material.AIR);
+                block.getState().update();
+            }
         }
     }
     @Override

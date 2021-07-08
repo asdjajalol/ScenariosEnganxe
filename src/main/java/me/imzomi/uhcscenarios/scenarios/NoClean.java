@@ -8,12 +8,16 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NoClean
         implements Listener, CommandExecutor {
@@ -23,19 +27,28 @@ public class NoClean
             (Main plugin){
         this.plugin = plugin;
     }
+    public static List<Player> NoCleanList = new ArrayList<>();
     @EventHandler
-    public void noClean(EntityDeathEvent e){
+    public void noClean(PlayerDeathEvent e){
         if (plugin.NoClean){
-            if (e.getEntity().getType() == EntityType.PLAYER && e.getEntity().getKiller().getType() == EntityType.PLAYER){
-                e.getEntity().getKiller().setInvulnerable(true);
-                e.getEntity().getKiller().sendMessage(ChatColor.DARK_GRAY + "[" + ChatColor.GOLD + "Enganxe" + ChatColor.DARK_GRAY + "]" + ChatColor.RESET + "You are currently immune for 10 seconds unless you hit someone.");
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                    @Override
+            if (e.getEntity().getKiller().getType() == EntityType.PLAYER){
+                Player p = e.getEntity();
+                Player k = e.getEntity().getKiller();
+                assert k != null;
+                k.setInvulnerable(true);
+                NoCleanList.add(k);
+                k.sendMessage(Utils.chat("&c[NoClean] Tienes invunerabilidad por 20 segundos."));
+                new BukkitRunnable() {
                     public void run() {
-                        e.getEntity().getKiller().setInvulnerable(false);
-                        Bukkit.broadcastMessage("This message is shown after one second");
+                        if (NoCleanList.contains(k)) {
+                            k.setInvulnerable(false);
+                            k.sendMessage(Utils.chat("&c[NoClean] Ya no eres invunerable."));
+                            NoCleanList.remove(k);
+                        }else{
+                            cancel();
+                        }
                     }
-                }, 600L);
+                }.runTaskLater(plugin, 20*20L);
             }
         }
     }
@@ -44,8 +57,43 @@ public class NoClean
     public void onDamage(EntityDamageByEntityEvent e){
         if (plugin.NoClean){
             if (e.getEntity().getType() == EntityType.PLAYER && e.getDamager().getType() == EntityType.PLAYER){
-                if (e.getDamager().isInvulnerable()){
+                if (NoCleanList.contains(e.getDamager())){
                     e.getDamager().setInvulnerable(false);
+                    e.getDamager().sendMessage(Utils.chat("&c[NoClean] Ya no eres invunerable."));
+                    NoCleanList.remove(e.getDamager());
+                }
+            }
+            if (e.getEntity().getType() == EntityType.PLAYER && e.getDamager().getType() == EntityType.ARROW){
+                Arrow arrow = (Arrow) e.getDamager();
+                if (arrow.getShooter() instanceof Player) {
+                    Player p = (Player) arrow.getShooter();
+                    if (NoCleanList.contains(p)){
+                        p.setInvulnerable(false);
+                        p.sendMessage(Utils.chat("&c[NoClean] Ya no eres invunerable."));
+                        NoCleanList.remove(p);
+                    }
+                }
+            }
+            if (e.getEntity().getType() == EntityType.PLAYER && e.getDamager().getType() == EntityType.TRIDENT){
+                Trident trident = (Trident) e.getDamager();
+                if (trident.getShooter() instanceof Player) {
+                    Player p = (Player) trident.getShooter();
+                    if (NoCleanList.contains(p)){
+                        p.setInvulnerable(false);
+                        p.sendMessage(Utils.chat("&c[NoClean] Ya no eres invunerable."));
+                        NoCleanList.remove(p);
+                    }
+                }
+            }
+            if (e.getEntity().getType() == EntityType.PLAYER && e.getDamager().getType() == EntityType.SPECTRAL_ARROW){
+                SpectralArrow arrow = (SpectralArrow) e.getDamager();
+                if (arrow.getShooter() instanceof Player) {
+                    Player p = (Player) arrow.getShooter();
+                    if (NoCleanList.contains(p)){
+                        p.setInvulnerable(false);
+                        p.sendMessage(Utils.chat("&c[NoClean] Ya no eres invunerable."));
+                        NoCleanList.remove(p);
+                    }
                 }
             }
         }

@@ -26,15 +26,16 @@ public class DiamondLess implements Listener, CommandExecutor {
     public void onBreak(BlockBreakEvent e) {
         if (plugin.DiamondLess) {
             Block block = e.getBlock();
-            if (block.getType() == Material.DIAMOND_ORE)
-                    e.setCancelled(true);
-                    block.setType(Material.AIR);
-                    block.getState().update();
-                    block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.IRON_INGOT));
-                    ExperienceOrb exp = (ExperienceOrb) e.getBlock().getWorld().spawn(e.getBlock().getLocation().add(0, 1, 0), ExperienceOrb.class);
-                    exp.setExperience(3);
-                }
+            if (block.getType() == Material.DIAMOND_ORE) {
+                e.setCancelled(true);
+                block.setType(Material.AIR);
+                block.getState().update();
+                block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.IRON_INGOT));
+                ExperienceOrb exp = (ExperienceOrb) e.getBlock().getWorld().spawn(e.getBlock().getLocation().add(0, 1, 0), ExperienceOrb.class);
+                exp.setExperience(3);
             }
+        }
+    }
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         Player p = (Player) sender;

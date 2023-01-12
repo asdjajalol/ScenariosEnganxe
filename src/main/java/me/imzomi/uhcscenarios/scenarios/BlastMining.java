@@ -48,11 +48,13 @@ public class BlastMining
     }
     @EventHandler
     public void creeperSpawn(BlockBreakEvent e){
-        if (e.getBlock().getType() == Material.COAL_ORE || e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.GOLD_ORE || e.getBlock().getType() == Material.DIAMOND_ORE || e.getBlock().getType() == Material.EMERALD_ORE || e.getBlock().getType() == Material.NETHER_QUARTZ_ORE ||
-                e.getBlock().getType() == Material.ANCIENT_DEBRIS){
-            Random rand = new Random();
-            if (rand.nextInt(100) <= 4){
-                e.getBlock().getWorld().spawn(e.getBlock().getLocation().add(0,1,0), Creeper.class);
+        if (plugin.BlastMining) {
+            if (e.getBlock().getType() == Material.COAL_ORE || e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.GOLD_ORE || e.getBlock().getType() == Material.DIAMOND_ORE || e.getBlock().getType() == Material.EMERALD_ORE || e.getBlock().getType() == Material.NETHER_QUARTZ_ORE ||
+                    e.getBlock().getType() == Material.ANCIENT_DEBRIS) {
+                Random rand = new Random();
+                if (rand.nextInt(100) <= 4) {
+                    e.getBlock().getWorld().spawn(e.getBlock().getLocation().add(0, 1, 0), Creeper.class);
+                }
             }
         }
     }

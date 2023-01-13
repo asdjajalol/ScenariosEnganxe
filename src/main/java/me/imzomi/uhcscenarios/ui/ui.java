@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.ui;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.utils.ItemBuilder;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ui {
     public static String iname = Utils.chat("&9Scenarios Activated");
     public static void openInventory(Player player) {
+        Main pl = Main.pl;
         Inventory inv = Bukkit.createInventory(null, 2 * 9, iname);
         if (Main.AbsorptionLess){
             ItemStack a = new ItemStack(Material.APPLE, 1);
@@ -298,6 +300,16 @@ public class ui {
             a.setItemMeta(e);
             inv.addItem(a);
         }
+        if (pl.anvilLess) inv.addItem(new ItemBuilder(Material.ANVIL).setDisplayName(Utils.chat("&bAnvilLess")).build());
+        if (pl.bareBones) inv.addItem(new ItemBuilder(Material.BONE_BLOCK).setDisplayName(Utils.chat("&bBareBones")).build());
+        if (pl.bats) inv.addItem(new ItemBuilder(Material.BAT_SPAWN_EGG).setDisplayName(Utils.chat("&bBats")).build());
+        if (pl.battleParanoia) inv.addItem(new ItemBuilder(Material.IRON_AXE).setDisplayName(Utils.chat("&bBattleParanoia")).build());
+        if (pl.betazombies) inv.addItem(new ItemBuilder(Material.ZOMBIE_HEAD).setDisplayName(Utils.chat("&bBetaZombies")).build());
+        if (pl.biomeboost) inv.addItem(new ItemBuilder(Material.SAND).setDisplayName(Utils.chat("&bBiomeBoost")).build());
+        if (pl.blocked) inv.addItem(new ItemBuilder(Material.BARRIER).setDisplayName(Utils.chat("&bBlocked")).build());
+        if (pl.bloodenchant) inv.addItem(new ItemBuilder(Material.ENCHANTING_TABLE).setDisplayName(Utils.chat("&bBloodEnchant")).build());
+        if (pl.cleanslate) inv.addItem(new ItemBuilder(Material.GRINDSTONE).setDisplayName(Utils.chat("&bCleanSlate")).build());
+        if (pl.emeraldfever) inv.addItem(new ItemBuilder(Material.EMERALD).setDisplayName(Utils.chat("&bEmeraldFever")).build());
         player.openInventory(inv);
     }
 }

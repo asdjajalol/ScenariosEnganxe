@@ -25,7 +25,7 @@ public class CutClean implements Listener, CommandExecutor {
     }
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
-        if (plugin.CutClean) {
+        if (plugin.CutClean && !plugin.bareBones) {
             Block block = e.getBlock();
             if (block.getType() == Material.IRON_ORE) {
                 if (e.getPlayer().getItemInHand().getType() == Material.STONE_PICKAXE || e.getPlayer().getItemInHand().getType() == Material.IRON_PICKAXE || e.getPlayer().getItemInHand().getType() == Material.DIAMOND_PICKAXE || e.getPlayer().getItemInHand().getType() == Material.NETHERITE_PICKAXE) {

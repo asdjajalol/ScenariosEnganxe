@@ -6,7 +6,6 @@ import me.imzomi.uhcscenarios.listeners.InventoryClick;
 import me.imzomi.uhcscenarios.scenarios.*;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -18,10 +17,11 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.Time;
 import java.util.Iterator;
 
 public class Main extends JavaPlugin{
+    public static Main pl;
+
     private final ShapelessRecipe diamond;
 
     public static Boolean NoFall = Boolean.valueOf(false);
@@ -64,6 +64,17 @@ public class Main extends JavaPlugin{
     public static Boolean DiamondLess = Boolean.valueOf(false);
     public static Boolean GoldLess = Boolean.valueOf(false);
     public static Boolean TimeBomb = Boolean.valueOf(false);
+    public boolean anvilLess = false;
+    public boolean bareBones = false;
+    public boolean bats = false;
+    public boolean battleParanoia = false;
+    public boolean betazombies = false;
+    public boolean biomeboost = false;
+    public boolean blocked = false;
+    public boolean bloodenchant = false;
+    public boolean cleanslate = false;
+    public boolean emeraldfever = false;
+
     public static String prefix = Utils.chat("&9&lUHC &8» &r");
     public static String enabled = Utils.chat("&9enabled");
     public static String disabled = Utils.chat("&9disabled");
@@ -77,6 +88,7 @@ public class Main extends JavaPlugin{
 //ChatColor.DARK_GRAY+ "["+ChatColor.GOLD+"Enganxe"+ChatColor.DARK_GRAY+"]" (nombre)
 
     public void onEnable(){
+        pl = this;
         Bukkit.getConsoleSender().sendMessage("ScenariosUHC has been enabled");
         registrarComandos();
         registrarEvents();
@@ -184,6 +196,16 @@ public class Main extends JavaPlugin{
         pm.registerEvents(new GoldLess(this), this);
         new InventoryClick(this);
         new TimeBomb(this);
+        new AnvilLess();
+        new BareBones();
+        new Bats();
+        new BattleParanoia();
+        new BetaZombies();
+        new BiomeBoost();
+        new Blocked();
+        new BloodEnchant();
+        new CleanSlate();
+        new EmeraldFever();
     }
     public void addDiamondRecipe() {
         getServer().addRecipe(diamond);

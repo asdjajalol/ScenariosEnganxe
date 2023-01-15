@@ -1,9 +1,11 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,20 +14,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-public class Coldweapons implements Listener, CommandExecutor {
+public class Coldweapons extends Scenario implements Listener{
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public Coldweapons(Main plugin){
-        this.plugin = plugin;
+    public Coldweapons(){
+        super("ColdWeapons", new ItemStack(Material.SNOWBALL));
     }
     private static final Enchantment ENCHANTMENT = Enchantment.FIRE_ASPECT;
 
     @EventHandler
     public void on(EnchantItemEvent event) {
-        if (plugin.Coldweapons){
         Map<Enchantment, Integer> toAdd = event.getEnchantsToAdd();
 
         if (!toAdd.containsKey(ENCHANTMENT)) {
@@ -40,21 +43,16 @@ public class Coldweapons implements Listener, CommandExecutor {
         }
 
         toAdd.put(Enchantment.DAMAGE_ALL, 1);
-    }}
+    }
+
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("Coldweapons")) {
-            if (!plugin.Coldweapons) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fColdweapons has been " + Main.enabled));
-                plugin.Coldweapons = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fColdweapons has been " + Main.disabled));
-                plugin.Coldweapons = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

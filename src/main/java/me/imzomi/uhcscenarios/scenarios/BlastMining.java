@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,18 +23,16 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.Random;
 
-public class BlastMining
-        implements Listener, CommandExecutor {
+public class BlastMining extends Scenario implements Listener{
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public BlastMining
-            (Main plugin){
-        this.plugin = plugin;
+    public BlastMining(){
+        super("BlastMining", new ItemStack(Material.CREEPER_SPAWN_EGG));
     }
 
     @EventHandler
     public void BlastMining(EntityDeathEvent e){
-        if (plugin.BlastMining){
             if (e.getEntity().getType() == EntityType.PLAYER){
                 ItemStack diamond = new ItemStack(Material.DIAMOND, 3);
                 ItemStack gold = new ItemStack (Material.GOLD_INGOT, 5);
@@ -44,11 +43,9 @@ public class BlastMining
                 e.getDrops().add(arrow);
                 e.getDrops().add(string);
             }
-        }
     }
     @EventHandler
     public void creeperSpawn(BlockBreakEvent e){
-        if (plugin.BlastMining) {
             if (e.getBlock().getType() == Material.COAL_ORE || e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.GOLD_ORE || e.getBlock().getType() == Material.DIAMOND_ORE || e.getBlock().getType() == Material.EMERALD_ORE || e.getBlock().getType() == Material.NETHER_QUARTZ_ORE ||
                     e.getBlock().getType() == Material.ANCIENT_DEBRIS) {
                 Random rand = new Random();
@@ -56,11 +53,9 @@ public class BlastMining
                     e.getBlock().getWorld().spawn(e.getBlock().getLocation().add(0, 1, 0), Creeper.class);
                 }
             }
-        }
     }
     @EventHandler
     public void creeperSpawn(CreatureSpawnEvent e){
-        if (plugin.BlastMining){
             if (e.getEntity().getType() == EntityType.CREEPER){
                 if (e.getSpawnReason() == CreatureSpawnEvent.SpawnReason.CUSTOM){
                     Creeper c = (Creeper) e.getEntity();
@@ -68,21 +63,14 @@ public class BlastMining
                 }
             }
         }
-    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("BlastMining")) {
-            if (!plugin.BlastMining) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fBlastMining has been " + Main.enabled));
-                plugin.BlastMining = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fBlastMining has been " + Main.disabled));
-                plugin.BlastMining = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

@@ -1,6 +1,9 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
+import me.imzomi.uhcscenarios.manager.ScenarioManager;
+import me.imzomi.uhcscenarios.utils.ItemBuilder;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -13,44 +16,32 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class GoldenRetriever implements Listener, CommandExecutor {
+public class GoldenRetriever extends Scenario implements Listener {
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-
-    public GoldenRetriever(Main plugin) {
-        this.plugin = plugin;
+    public GoldenRetriever() {
+        super("GoldenRetriever", new ItemStack(Material.GOLDEN_APPLE));
     }
     @EventHandler
     public void onDeath(PlayerDeathEvent e){
-        if (Main.TimeBomb){
+        if (ScenarioManager.getInstance().getScenario("TimeBomb").isEnabled()){
             return;
         }
-        if (Main.GoldenRetriever){
             Player p = e.getEntity();
-            ItemStack gHead = new ItemStack(Material.GOLDEN_APPLE);
-            ItemMeta HeadMeta = gHead.getItemMeta();
-            HeadMeta.setDisplayName("§6Golden Head");
-            gHead.setItemMeta(HeadMeta);
             Location loc = p.getLocation();
             World w = p.getWorld();
-            w.dropItem(loc, gHead);
+            w.dropItem(loc, new ItemBuilder(Material.GOLDEN_APPLE).setDisplayName(Utils.chat("&6Golden Head")).build());
         }
+
+
+    @Override
+    protected void setEnabled(boolean b) {
+        enabled = b;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("GoldenRetriever")) {
-            if (!plugin.GoldenRetriever) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fGoldenRetriever has been " + Main.enabled));
-                plugin.GoldenRetriever = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fGappleRoulette has been " + Main.disabled));
-                plugin.GoldenRetriever = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    public boolean isEnabled() {
+        return enabled;
     }
 }

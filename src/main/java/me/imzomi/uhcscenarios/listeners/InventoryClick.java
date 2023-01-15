@@ -8,10 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class InventoryClick implements Listener {
-    private Main plugin;
+    private Main plugin = Main.pl;
 
-    public InventoryClick (Main plugin){
-        this.plugin = plugin;
+    public InventoryClick (){
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 

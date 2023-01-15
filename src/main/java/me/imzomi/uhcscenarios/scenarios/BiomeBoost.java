@@ -1,8 +1,10 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
@@ -12,15 +14,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class BiomeBoost implements Listener, CommandExecutor {
+public class BiomeBoost extends Scenario implements Listener{
     private Main pl = Main.pl;
+    private boolean enabled = false;
 
     public BiomeBoost() {
-        pl.getServer().getPluginManager().registerEvents(this,pl);
-        pl.getCommand("biomeboost").setExecutor(this);
+        super("BiomeBoost", new ItemStack(Material.SAND));
     }
 
     @EventHandler
@@ -28,7 +31,6 @@ public class BiomeBoost implements Listener, CommandExecutor {
         Player p = e.getPlayer();
         Biome biome = p.getLocation().getBlock().getBiome();
         String b = biome.name();
-        if (pl.biomeboost) {
             switch (p.getWorld().getName()) {
                 case "uhc", "nether" -> {
                     if (b.contains("DESERT") || b.contains("SAVANNA") || b.contains("BADLANDS") || biome.equals(Biome.BASALT_DELTAS)) {
@@ -52,14 +54,15 @@ public class BiomeBoost implements Listener, CommandExecutor {
                 }
             }
         }
+
+
+    @Override
+    protected void setEnabled(boolean b) {
+        enabled = b;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("biomeboost")) {
-            pl.biomeboost = !pl.biomeboost;
-            Bukkit.broadcastMessage(Utils.chat(pl.prefix + "&fBiomeBoost has been " + (pl.biomeboost ? Main.enabled : Main.disabled)));
-        }
-        return false;
+    public boolean isEnabled() {
+        return enabled;
     }
 }

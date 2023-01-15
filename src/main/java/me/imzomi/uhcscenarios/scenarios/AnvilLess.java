@@ -1,8 +1,10 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -11,21 +13,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.AnvilInventory;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-public class AnvilLess implements Listener, CommandExecutor {
+public class AnvilLess extends Scenario implements Listener {
     private Main pl = Main.pl;
+    private boolean enabled = false;
 
     public AnvilLess() {
-        pl.getServer().getPluginManager().registerEvents(this, pl);
-        pl.getCommand("anvilless").setExecutor(this);
+        super("AnvilLess", new ItemStack(Material.ANVIL));
     }
 
     @EventHandler
     public void onInteract(InventoryClickEvent e) {
-        if (pl.anvilLess) {
             if (!e.isCancelled()) {
                 if (e.getWhoClicked() instanceof Player p) {
                     if (e.getInventory() instanceof AnvilInventory) {
@@ -44,14 +44,14 @@ public class AnvilLess implements Listener, CommandExecutor {
                 }
             }
         }
+
+    @Override
+    protected void setEnabled(boolean b) {
+        enabled = b;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("anvilless")) {
-            pl.anvilLess = !pl.anvilLess;
-            Bukkit.broadcastMessage(Utils.chat(pl.prefix + "&fAnvilLess has been " + (pl.anvilLess ? Main.enabled : Main.disabled)));
-        }
-        return false;
+    public boolean isEnabled() {
+        return enabled;
     }
 }

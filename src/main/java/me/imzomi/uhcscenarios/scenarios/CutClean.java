@@ -1,6 +1,8 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
+import me.imzomi.uhcscenarios.manager.ScenarioManager;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,15 +19,17 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class CutClean implements Listener, CommandExecutor {
+public class CutClean extends Scenario implements Listener{
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public CutClean(Main plugin){
-        this.plugin = plugin;
+    public CutClean(){
+        super("CutClean", new ItemStack(Material.IRON_INGOT));
     }
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
-        if (plugin.CutClean && !plugin.bareBones) {
+        ScenarioManager scen = ScenarioManager.getInstance();
+        if (!scen.getScenario("BareBones").isEnabled()) {
             Block block = e.getBlock();
             if (block.getType() == Material.IRON_ORE) {
                 if (e.getPlayer().getItemInHand().getType() == Material.STONE_PICKAXE || e.getPlayer().getItemInHand().getType() == Material.IRON_PICKAXE || e.getPlayer().getItemInHand().getType() == Material.DIAMOND_PICKAXE || e.getPlayer().getItemInHand().getType() == Material.NETHERITE_PICKAXE) {
@@ -70,7 +74,6 @@ public class CutClean implements Listener, CommandExecutor {
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if (plugin.CutClean) {
             for (ItemStack drops : event.getDrops()) {
                 if (drops.getType() == Material.PORKCHOP) {
                     drops.setType(Material.COOKED_PORKCHOP);
@@ -89,23 +92,16 @@ public class CutClean implements Listener, CommandExecutor {
                 }
             }
         }
+
+
+    @Override
+    protected void setEnabled(boolean b) {
+        enabled = b;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("CutClean")) {
-            if (!plugin.CutClean) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fCutClean has been " + Main.enabled));
-                plugin.CutClean = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fCutClean has been " + Main.disabled));
-                plugin.CutClean = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    public boolean isEnabled() {
+        return enabled;
     }
 }
 

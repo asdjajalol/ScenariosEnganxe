@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,45 +18,39 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
-public class LuckyLeaves implements Listener, CommandExecutor {
+public class LuckyLeaves extends Scenario implements Listener{
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public LuckyLeaves(Main plugin){
-        this.plugin = plugin;
+    public LuckyLeaves(){
+        super("LuckyLeaves", new ItemStack(Material.OAK_LEAVES));
     }
     @EventHandler
     public void leaveDeacay(LeavesDecayEvent e){
-        if (plugin.LuckyLeaves){
             if(new Random().nextInt(100) == 99){
                 e.getBlock().getWorld().dropItem(e.getBlock().getLocation().add(0.5,0,0.5),new ItemStack(Material.GOLDEN_APPLE));
             }
         }
-    }
 
     @EventHandler
     public void breackLeave(BlockBreakEvent e) {
-        if (plugin.LuckyLeaves) {
-            if (e.getBlock().getType() == Material.ACACIA_LEAVES || e.getBlock().getType() == Material.BIRCH_LEAVES || e.getBlock().getType() == Material.DARK_OAK_LEAVES || e.getBlock().getType() == Material.JUNGLE_LEAVES || e.getBlock().getType() == Material.OAK_LEAVES || e.getBlock().getType() == Material.SPRUCE_LEAVES) {
+        switch (e.getBlock().getType()) {
+            case ACACIA_LEAVES, BIRCH_LEAVES, DARK_OAK_LEAVES, JUNGLE_LEAVES, OAK_LEAVES, SPRUCE_LEAVES -> {
                 if (new Random().nextInt(100) == 99) {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation().add(0.5, 0, 0.5), new ItemStack(Material.GOLDEN_APPLE));
                 }
             }
         }
     }
+
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("LuckyLeaves")) {
-            if (!plugin.LuckyLeaves) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fLuckyLeaves has been " + Main.enabled));
-                plugin.LuckyLeaves = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fLuckyLeaves has been " + Main.disabled));
-                plugin.LuckyLeaves = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

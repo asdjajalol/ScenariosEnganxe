@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,15 +16,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class HasteyBabies implements Listener, CommandExecutor {
+public class HasteyBabies extends Scenario implements Listener{
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public HasteyBabies(Main plugin){
-        this.plugin = plugin;
+    public HasteyBabies(){
+        super("HasteyBabies", new ItemStack(Material.IRON_PICKAXE));
     }
     @EventHandler
     public void OnInventoryClick(InventoryClickEvent e) {
-        if (plugin.HasteyBabies) {
             if (e.getClickedInventory() != null) {
                 if (e.getCurrentItem() != null) {
                     ItemStack item = e.getCurrentItem();
@@ -40,21 +41,14 @@ public class HasteyBabies implements Listener, CommandExecutor {
                 }
             }
         }
-    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("HasteyBabies")) {
-            if (!plugin.HasteyBabies) {
-                Bukkit.broadcastMessage( Utils.chat(Main.prefix + "&fHasteyBabies has been " + Main.enabled));
-                plugin.HasteyBabies = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fHasteyBabies has been " + Main.disabled));
-                plugin.HasteyBabies = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

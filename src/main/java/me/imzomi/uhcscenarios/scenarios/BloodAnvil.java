@@ -1,9 +1,11 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,16 +21,17 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
-public class BloodAnvil implements Listener, CommandExecutor {
+public class BloodAnvil extends Scenario implements Listener {
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public BloodAnvil(Main plugin){
-        this.plugin = plugin;
+    public BloodAnvil(){
+        super("BloodAnvil", new ItemStack(Material.ANVIL));
     }
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClick(InventoryClickEvent e){
         if(!e.isCancelled()){
-            if (plugin.BloodAnvil){
                 HumanEntity ent = e.getWhoClicked();
                 if(ent instanceof Player){
                     Player p = (Player)ent;
@@ -40,12 +43,7 @@ public class BloodAnvil implements Listener, CommandExecutor {
                             if(rawSlot == 2){
                                 ItemStack item = e.getCurrentItem();
                                 if(item != null) {
-                                    if (p.getHealth() < 1){
-                                        p.setHealth(0);
-                                    }else {
-                                        p.setHealth(p.getHealth() - 1);
-                                    }
-                                    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_HURT, 1,1);
+                                    p.damage(1);
                                 }
                             }
                         }
@@ -53,24 +51,15 @@ public class BloodAnvil implements Listener, CommandExecutor {
                 }
             }
         }
-    }
-
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("BloodAnvil")) {
-            if (!plugin.BloodAnvil) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fBloodAnvil has been " + Main.enabled));
-                plugin.BloodAnvil = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fBloodAnvil has been " + Main.disabled));
-                plugin.BloodAnvil = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }
 

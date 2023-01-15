@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,31 +17,31 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class CleanSlate implements Listener, CommandExecutor {
+public class CleanSlate extends Scenario implements Listener {
     private Main pl = Main.pl;
+    private boolean enabled = false;
 
     public CleanSlate() {
-        pl.getServer().getPluginManager().registerEvents(this,pl);
-        pl.getCommand("cleanslate").setExecutor(this);
+        super("CleanSlate", new ItemStack(Material.GRINDSTONE));
     }
 
     @EventHandler
     public void onKill(PlayerDeathEvent e) {
-        if (pl.cleanslate) {
             Player k = e.getEntity().getKiller();
             if (k != null) {
                 Arrays.stream(k.getInventory().getContents()).filter(Objects::nonNull).filter(i -> !i.getType().equals(Material.AIR)).forEach(i -> i.getEnchantments().keySet().forEach(i::removeEnchantment));
                 Arrays.stream(k.getInventory().getArmorContents()).filter(Objects::nonNull).filter(i -> !i.getType().equals(Material.AIR)).forEach(i -> i.getEnchantments().keySet().forEach(i::removeEnchantment));
             }
         }
+
+
+    @Override
+    protected void setEnabled(boolean b) {
+        enabled = b;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("cleanslate")) {
-            pl.cleanslate = !pl.cleanslate;
-            Bukkit.broadcastMessage(Utils.chat(pl.prefix + "&fCleanSlate has been " + (pl.cleanslate ? Main.enabled : Main.disabled)));
-        }
-        return false;
+    public boolean isEnabled() {
+        return enabled;
     }
 }

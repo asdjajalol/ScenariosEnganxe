@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,17 +14,16 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class Bats implements Listener, CommandExecutor {
+public class Bats extends Scenario implements Listener{
     private Main pl = Main.pl;
+    private boolean enabled = false;
 
     public Bats() {
-        pl.getServer().getPluginManager().registerEvents(this,pl);
-        pl.getCommand("bats").setExecutor(this);
+        super("Bats", new ItemStack(Material.BAT_SPAWN_EGG));
     }
 
     @EventHandler
     public void onKill(EntityDeathEvent e) {
-        if (pl.bats) {
             if (e.getEntity() instanceof Bat && e.getEntity().getKiller() != null) {
                 int i = Utils.getRandomInt(100);
                 if (i >= 95) {
@@ -33,14 +33,14 @@ public class Bats implements Listener, CommandExecutor {
                 }
             }
         }
+
+    @Override
+    protected void setEnabled(boolean b) {
+        enabled = b;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("bats")) {
-            pl.bats = !pl.bats;
-            Bukkit.broadcastMessage(Utils.chat(pl.prefix + "&fBats has been " + (pl.bats ? Main.enabled : Main.disabled)));
-        }
-        return false;
+    public boolean isEnabled() {
+        return enabled;
     }
 }

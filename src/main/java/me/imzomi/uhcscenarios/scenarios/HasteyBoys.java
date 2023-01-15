@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,15 +16,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class HasteyBoys implements Listener, CommandExecutor {
+public class HasteyBoys extends Scenario implements Listener{
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public HasteyBoys(Main plugin){
-        this.plugin = plugin;
+    public HasteyBoys(){
+        super("HasteyBoys", new ItemStack(Material.DIAMOND_PICKAXE));
     }
     @EventHandler
     public void OnInventoryClick(InventoryClickEvent e) {
-        if (plugin.HasteyBoys) {
             if (e.getClickedInventory() != null) {
                 if (e.getCurrentItem() != null) {
                     ItemStack item = e.getCurrentItem();
@@ -40,21 +41,14 @@ public class HasteyBoys implements Listener, CommandExecutor {
                 }
             }
         }
-    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("HasteyBoys")) {
-            if (!plugin.HasteyBoys) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fHasteyBoys has been " + Main.enabled));
-                plugin.HasteyBoys = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fHasteyBoys has been " + Main.disabled));
-                plugin.HasteyBoys = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,15 +17,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class TripleOres implements Listener, CommandExecutor {
+public class TripleOres extends Scenario implements Listener {
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public TripleOres(Main plugin){
-        this.plugin = plugin;
+    public TripleOres(){
+        super("TripleOres", new ItemStack(Material.IRON_INGOT,3));
     }
     @EventHandler
     public void doubleOres(BlockBreakEvent e) {
-        if (plugin.TripleOres) {
             Block block = e.getBlock();
             if (e.getBlock().getType() == Material.COAL_ORE) {
                 e.setCancelled(true);
@@ -86,21 +87,14 @@ public class TripleOres implements Listener, CommandExecutor {
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.FLINT));
             }
         }
-    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("TripleOres")) {
-            if (!plugin.TripleOres) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fTripleOres has been " + Main.enabled));
-                plugin.TripleOres = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fTripleOres has been " + Main.disabled));
-                plugin.TripleOres = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

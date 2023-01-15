@@ -1,6 +1,8 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
+import me.imzomi.uhcscenarios.manager.ScenarioManager;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,23 +18,23 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class BareBones implements Listener, CommandExecutor {
+public class BareBones extends Scenario implements Listener{
     private Main pl = Main.pl;
+    private boolean enabled = false;
 
     public BareBones() {
-        pl.getServer().getPluginManager().registerEvents(this,pl);
-        pl.getCommand("barebones").setExecutor(this);
+        super("BareBones", new ItemStack(Material.BONE_BLOCK));
     }
 
     @EventHandler
     public void onBreak(BlockBreakEvent e) {
-        if (pl.bareBones) {
             Player p = e.getPlayer();
             Block b = e.getBlock();
-            ItemStack replaced = new ItemStack(pl.CutClean ? Material.IRON_INGOT : Material.IRON_ORE);
-            if (pl.DoubleOres) {
+            ScenarioManager scen = ScenarioManager.getInstance();
+            ItemStack replaced = new ItemStack(scen.getScenario("CutClean").isEnabled() ? Material.IRON_INGOT : Material.IRON_ORE);
+            if (scen.getScenario("DoubleOres").isEnabled()) {
                 replaced.setAmount(2);
-            } else if (pl.TripleOres) {
+            } else if (scen.getScenario("TripleOres").isEnabled()) {
                 replaced.setAmount(3);
             }
             switch (b.getType()) {
@@ -43,33 +45,30 @@ public class BareBones implements Listener, CommandExecutor {
                 }
             }
         }
-    }
 
     @EventHandler
     public void onCraft(CraftItemEvent e) {
-        if (pl.bareBones) {
             switch (e.getRecipe().getResult().getType()) {
                 case ENCHANTING_TABLE, ANVIL, GOLDEN_APPLE -> e.setCancelled(true);
             }
         }
-    }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent e) {
-        if (pl.bareBones) {
             e.getDrops().add(new ItemStack(Material.DIAMOND));
             e.getDrops().add(new ItemStack(Material.GOLDEN_APPLE));
             e.getDrops().add(new ItemStack(Material.ARROW,12));
             e.getDrops().add(new ItemStack(Material.STRING,2));
         }
+
+
+    @Override
+    protected void setEnabled(boolean b) {
+        enabled = b;
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("barebones")) {
-            pl.bareBones = !pl.bareBones;
-            Bukkit.broadcastMessage(Utils.chat(pl.prefix + "&fBareBones has been " + (pl.bareBones ? Main.enabled : Main.disabled)));
-        }
-        return false;
+    public boolean isEnabled() {
+        return enabled;
     }
 }

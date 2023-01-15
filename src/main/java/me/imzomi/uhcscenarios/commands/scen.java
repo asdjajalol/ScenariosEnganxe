@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 import static me.imzomi.uhcscenarios.ui.ui.*;
 
 public class scen implements CommandExecutor {
-    private Main plugin;
+    private Main plugin = Main.pl;
 
-    public scen(Main plugin){
-        this.plugin = plugin;
+    public scen(){
+        plugin.getCommand("scen").setExecutor(this);
     }
 
     public boolean onCommand(CommandSender sender, Command comando, String label, String[] args) {

@@ -1,6 +1,7 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,18 +16,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Objects;
 
-public class Timber implements Listener, CommandExecutor {
+public class Timber extends Scenario implements Listener{
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
 
-    private Main plugin;
-    public Timber(Main plugin){
-        this.plugin = plugin;
+    public Timber(){
+        super("Timber", new ItemStack(Material.OAK_LOG));
     }
     @EventHandler
     public void onBreak(BlockBreakEvent e){
-        if (plugin.Timber){
             if (e.getBlock().getType() == Material.OAK_LOG || e.getBlock().getType() == Material.BIRCH_LOG || e.getBlock().getType() == Material.SPRUCE_LOG || e.getBlock().getType() == Material.JUNGLE_LOG || e.getBlock().getType() == Material.ACACIA_LOG || e.getBlock().getType() == Material.DARK_OAK_LOG || e.getBlock().getType() == Material.CRIMSON_STEM || e.getBlock().getType() == Material.WARPED_STEM) {
                 Block b = e.getBlock();
                 if (b.getType() != Material.OAK_LOG && b.getType() != Material.BIRCH_LOG && b.getType() != Material.SPRUCE_LOG && b.getType() != Material.JUNGLE_LOG && b.getType() != Material.ACACIA_LOG && b.getType() != Material.DARK_OAK_LOG && b.getType() != Material.CRIMSON_STEM && b.getType() != Material.WARPED_STEM)
@@ -39,21 +41,15 @@ public class Timber implements Listener, CommandExecutor {
                 }
             }
         }
-    }
+
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("Timber")) {
-            if (!plugin.Timber) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fTimber has been " + Main.enabled));
-                plugin.Timber = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fTimber has been " + Main.disabled));
-                plugin.Timber = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

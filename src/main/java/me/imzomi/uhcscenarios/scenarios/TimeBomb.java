@@ -1,6 +1,8 @@
 package me.imzomi.uhcscenarios.scenarios;
 
 import me.imzomi.uhcscenarios.Main;
+import me.imzomi.uhcscenarios.manager.Scenario;
+import me.imzomi.uhcscenarios.manager.ScenarioManager;
 import me.imzomi.uhcscenarios.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,16 +35,17 @@ import java.util.List;
 import static org.bukkit.Material.ENCHANTING_TABLE;
 import static org.bukkit.Material.GOLDEN_APPLE;
 
-public class TimeBomb implements Listener, CommandExecutor {
-    private Main plugin;
-    public TimeBomb (Main plugin){
-        this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+public class TimeBomb extends Scenario implements Listener {
+    private Main plugin = Main.pl;
+    private boolean enabled = false;
+
+    public TimeBomb (){
+        super("TimeBomb", new ItemStack(Material.TNT));
     }
 
     @EventHandler
     public void on(PlayerDeathEvent event) {
-        if (plugin.TimeBomb) {
+        ScenarioManager scen = ScenarioManager.getInstance();
             final Player player = event.getEntity();
             final Location loc = player.getLocation().clone();
 
@@ -77,7 +80,7 @@ public class TimeBomb implements Listener, CommandExecutor {
                 chest.getInventory().addItem(item);
             }
             ItemStack a = new ItemStack(Material.NETHERITE_SCRAP, 2);
-            if (Main.BleedingSweets) {
+            if (scen.getScenario("BleedingSweets").isEnabled()) {
                 ItemStack diamond = new ItemStack(Material.DIAMOND, 1);
                 ItemStack gold = new ItemStack(Material.GOLD_INGOT, 5);
                 ItemStack arrow = new ItemStack(Material.ARROW, 16);
@@ -89,7 +92,7 @@ public class TimeBomb implements Listener, CommandExecutor {
                 chest.getInventory().addItem(string);
                 chest.getInventory().addItem(book);
             }
-            if (Main.HeavyPockets) {
+            if (scen.getScenario("HeavyPockets").isEnabled()) {
                 chest.getInventory().addItem(a);
             }
 
@@ -99,10 +102,10 @@ public class TimeBomb implements Listener, CommandExecutor {
             assert gheadMeta != null;
             gheadMeta.setDisplayName(Utils.chat("&6Golden Head"));
             ghead.setItemMeta(gheadMeta);
-            if (Main.GoldenRetriever) {
+            if (scen.getScenario("GoldenRetriever").isEnabled()) {
                 chest.getInventory().addItem(ghead);
             }
-            if (Main.EnchantedDeath) {
+            if (scen.getScenario("EnchantedDeath").isEnabled()) {
                 ItemStack e = new ItemStack(ENCHANTING_TABLE, 1);
                 chest.getInventory().addItem(e);
             }
@@ -147,21 +150,14 @@ public class TimeBomb implements Listener, CommandExecutor {
                 }
             }.runTaskTimer(plugin, 0, 20);
         }
-    }
+
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        Player p = (Player) sender;
-        if (sender.hasPermission("uhc.admin") && cmd.getName().equalsIgnoreCase("timebomb")) {
-            if (!plugin.TimeBomb) {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fTimeBomb has been " + Main.enabled));
-                plugin.TimeBomb = Boolean.valueOf(true);
-            } else {
-                Bukkit.broadcastMessage(Utils.chat(Main.prefix + "&fTimeBomb has been " + Main.disabled));
-                plugin.TimeBomb = Boolean.valueOf(false);
-            }
-        } else {
-            p.sendMessage(ChatColor.RED + "No tienes permisos para utilizar este comando");
-        }
-        return false;
+    protected void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

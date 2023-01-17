@@ -20,7 +20,7 @@ public class ui {
     public static String iname = Utils.chat("&9Scenarios Activated");
     public static void openInventory(Player player) {
         Inventory inv = Bukkit.createInventory(null, 2 * 9, iname);
-        ScenarioManager.getInstance().getScenarios().forEach(s -> inv.addItem(new ItemBuilder(s.getIcon()).setDisplayName(ChatColor.AQUA + s.getName()).build()));
+        ScenarioManager.getInstance().getEnabledScenarios().forEach(s -> inv.addItem(new ItemBuilder(s.getIcon()).setDisplayName(ChatColor.AQUA + s.getName()).build()));
         player.openInventory(inv);
     }
 }

@@ -42,7 +42,7 @@ public class ScenarioCommand implements CommandExecutor, TabExecutor {
                         if (s.getName().equals("Krenzinator")) {
                             Krenzinator.removeRecipe();
                         }
-                        Bukkit.broadcastMessage(pl.prefix + s.getName() + " has been &9disable");
+                        Bukkit.broadcastMessage(Utils.chat(pl.prefix + s.getName() + " has been &9disabled"));
                     } else {
                         s.enable();
                         if (s.getName().equals("EmeraldFever")) {
@@ -51,7 +51,7 @@ public class ScenarioCommand implements CommandExecutor, TabExecutor {
                         if (s.getName().equals("Krenzinator")) {
                             Krenzinator.addRecipe();
                         }
-                        Bukkit.broadcastMessage(pl.prefix + s.getName() + " has been &9enable");
+                        Bukkit.broadcastMessage(Utils.chat(pl.prefix + s.getName() + " has been &9enabled"));
                     }
                 }
             }

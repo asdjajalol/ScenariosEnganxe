@@ -9,6 +9,7 @@ commands:
   scen:
     description: scen command
   scenarios:
+  cobbleonly:
 
 
 

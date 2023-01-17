@@ -129,7 +129,7 @@ public class TimeBomb extends Scenario implements Listener {
                     time--;
 
                     if (time == 0) {
-                        Bukkit.broadcastMessage(Main.prefix + player.getName() + "'s §7corpse has exploded!");
+                        Bukkit.broadcastMessage(plugin.prefix + player.getName() + "'s §7corpse has exploded!");
                         loc.getBlock().setType(Material.AIR);
                         loc.getWorld().createExplosion(loc.getBlockX() + 0.5, loc.getBlockY() + 0.5, loc.getBlockZ() + 0.5, 3, false, true);
                         loc.getWorld().strikeLightning(loc);

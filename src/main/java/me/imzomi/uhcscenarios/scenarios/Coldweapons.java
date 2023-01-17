@@ -36,7 +36,7 @@ public class Coldweapons extends Scenario implements Listener{
         }
 
         toAdd.remove(ENCHANTMENT);
-        event.getEnchanter().sendMessage(Utils.chat(Main.prefix + "&cEl UHC es ColdWeapons"));
+        event.getEnchanter().sendMessage(Utils.chat(plugin.prefix + "&cEl UHC es ColdWeapons"));
 
         if (toAdd.containsKey(Enchantment.DAMAGE_ALL) || toAdd.containsKey(Enchantment.DAMAGE_UNDEAD) || toAdd.containsKey(Enchantment.DAMAGE_ARTHROPODS)) {
             return;

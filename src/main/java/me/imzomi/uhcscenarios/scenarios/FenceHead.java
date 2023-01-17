@@ -49,7 +49,9 @@ public class FenceHead extends Scenario implements Listener {
                         UUID uuid = p.getUniqueId();
                         skullState.setOwningPlayer(Bukkit.getServer().getOfflinePlayer(uuid));
                         skullState.update();
-                        p.getWorld().getBlockAt(PlayerLocX, PlayerY, PlayerLocZ).setType(Material.NETHER_BRICK_FENCE);
+                        if (!ScenarioManager.getInstance().getScenario("TimeBomb").isEnabled()) {
+                            p.getWorld().getBlockAt(PlayerLocX, PlayerY, PlayerLocZ).setType(Material.NETHER_BRICK_FENCE);
+                        }
                     }
                 }).runTaskLater(this.plugin, 10L);
             }

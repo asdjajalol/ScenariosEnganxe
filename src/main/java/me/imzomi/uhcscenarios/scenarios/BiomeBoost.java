@@ -31,29 +31,27 @@ public class BiomeBoost extends Scenario implements Listener{
         Player p = e.getPlayer();
         Biome biome = p.getLocation().getBlock().getBiome();
         String b = biome.name();
-            switch (p.getWorld().getName()) {
-                case "uhc", "nether" -> {
-                    if (b.contains("DESERT") || b.contains("SAVANNA") || b.contains("BADLANDS") || biome.equals(Biome.BASALT_DELTAS)) {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 40, 0));
-                    }
-                    if (b.contains("PLAINS") || biome.equals(Biome.SOUL_SAND_VALLEY)) {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 0));
-                    }
-                    if (b.contains("MOUNTAINS") || biome.equals(Biome.NETHER_WASTES)) {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 40, 0));
-                    }
-                    if (b.contains("RIVER") || b.contains("OCEAN") || b.contains("SWAMP")) {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 40, 0));
-                    }
-                    if (b.contains("FOREST")) {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 0));
-                    }
-                    if (p.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 40, 0));
-                    }
-                }
+        if (!p.getWorld().getName().equals("lobby")) {
+            if (b.contains("DESERT") || b.contains("SAVANNA") || b.contains("BADLANDS") || biome.equals(Biome.BASALT_DELTAS)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 40, 0));
+            }
+            if (b.contains("PLAINS") || biome.equals(Biome.SOUL_SAND_VALLEY)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 40, 0));
+            }
+            if (b.contains("MOUNTAINS") || biome.equals(Biome.NETHER_WASTES)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 40, 0));
+            }
+            if (b.contains("RIVER") || b.contains("OCEAN") || b.contains("SWAMP")) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.DOLPHINS_GRACE, 40, 0));
+            }
+            if (b.contains("FOREST")) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 40, 0));
+            }
+            if (p.getWorld().getEnvironment().equals(World.Environment.THE_END)) {
+                p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 40, 0));
             }
         }
+    }
 
 
     @Override

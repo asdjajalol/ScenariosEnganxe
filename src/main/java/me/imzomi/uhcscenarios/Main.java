@@ -1,7 +1,10 @@
 package me.imzomi.uhcscenarios;
 
+import me.imzomi.uhcscenarios.Files.ConfigFile;
+import me.imzomi.uhcscenarios.commands.CobbleOnlyCommand;
 import me.imzomi.uhcscenarios.commands.ScenarioCommand;
 import me.imzomi.uhcscenarios.commands.scen;
+import me.imzomi.uhcscenarios.listeners.CobbleOnly;
 import me.imzomi.uhcscenarios.listeners.InventoryClick;
 import me.imzomi.uhcscenarios.manager.ScenarioManager;
 import me.imzomi.uhcscenarios.utils.ItemBuilder;
@@ -18,12 +21,17 @@ public class Main extends JavaPlugin {
 
     public String prefix = Utils.chat("&9&lUHC &8» &r");
 
+    public ConfigFile config;
+
     public void onEnable() {
         pl = this;
+        config = new ConfigFile(this);
         new InventoryClick();
+        new CobbleOnly();
         new scen();
         ScenarioManager.getInstance().setup();
         new ScenarioCommand();
+        new CobbleOnlyCommand();
         Bukkit.getConsoleSender().sendMessage("ScenariosUHC has been enabled");
 
         NamespacedKey key = new NamespacedKey(this, "golden_head");

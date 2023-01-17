@@ -12,6 +12,7 @@ public class ScenarioManager {
     public void setup() {
         scenarios.add(new AbsorptionLess());
         scenarios.add(new AnvilLess());
+        scenarios.add(new AntiBurn());
         scenarios.add(new BareBones());
         scenarios.add(new Bats());
         scenarios.add(new BattleParanoia());
